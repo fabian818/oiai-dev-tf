@@ -9,5 +9,5 @@ data "terraform_remote_state" "oiai-dev-01" {
 
 ***REMOVED***
   main_cluster = data.terraform_remote_state.oiai-dev-01.outputs.main_cluster
-  vpc                                 = data.terraform_remote_state.oiai-dev-01.outputs.vpc
+  vpc          = data.terraform_remote_state.oiai-dev-01.outputs.vpc
 ***REMOVED***

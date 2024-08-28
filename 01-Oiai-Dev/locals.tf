@@ -23,6 +23,6 @@
 
   ecr-repos = {
     frontend = {***REMOVED***
-    api = {***REMOVED***
+    api      = {***REMOVED***
   ***REMOVED***
 ***REMOVED***

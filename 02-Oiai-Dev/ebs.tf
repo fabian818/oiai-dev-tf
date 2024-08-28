@@ -33,5 +33,5 @@ resource "helm_release" "ebs" {
   set {
     name  = "controller.serviceAccount.create"
     value = "false"
-  ***REMOVED*** 
+  ***REMOVED***
 ***REMOVED***

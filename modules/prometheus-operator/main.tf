@@ -59,9 +59,9 @@ resource "helm_release" "prometheus_operator" {
 
   values = [
     "${templatefile("${path.module***REMOVED***/values-prometheus.yaml",
-    {
-      thanos_s3_role_arn=module.thanos_irsa_access.iam_role_arn,
-      cluster_name=var.cluster_name
+      {
+        thanos_s3_role_arn = module.thanos_irsa_access.iam_role_arn,
+        cluster_name       = var.cluster_name
     ***REMOVED***)***REMOVED***"
 ***REMOVED***
 ***REMOVED***

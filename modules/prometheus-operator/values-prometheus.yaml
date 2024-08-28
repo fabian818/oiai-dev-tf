@@ -1,0 +1,38 @@
+prometheus:
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: ${thanos_s3_role_arn***REMOVED***
+  persistence:
+    enabled: true
+    accessModes:
+      - ReadWriteOnce
+    size: 8Gi
+    annotations:
+      eks.amazonaws.com/role-arn: ${thanos_s3_role_arn***REMOVED***
+  disableCompaction: true
+  externalLabels:
+    cluster: ${cluster_name***REMOVED***
+  thanos:
+    create: true
+    objectStorageConfig:
+      secretName: thanos-objstore-config
+      secretKey: thanos.yaml
+    service:
+      annotations:
+        service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+        service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+        service.beta.kubernetes.io/aws-load-balancer-type: external
+      clusterIP: None
+      externalTrafficPolicy: Cluster
+      extraPorts: []
+      labels: {***REMOVED***
+      loadBalancerClass: ""
+      loadBalancerIP: ""
+      loadBalancerSourceRanges: []
+      nodePorts:
+        grpc: ""
+      ports:
+        grpc: 10901
+      sessionAffinity: None
+      sessionAffinityConfig: {***REMOVED***
+      type: LoadBalancer

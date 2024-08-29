@@ -43,11 +43,11 @@ module "main_eks" {
 
   eks_managed_node_groups = {
     on-demand-4vcpu-16gb = {
-      instance_types = ["t3.small"]
+      instance_types = ["t3.medium"]
       capacity_type  = "ON_DEMAND"
-      min_size       = 2
-      max_size       = 3
-      desired_size   = 2
+      min_size       = 4
+      max_size       = 5
+      desired_size   = 4
       launch_template_tags = {
         "amiFamily" = "bottlerocket"
       ***REMOVED***

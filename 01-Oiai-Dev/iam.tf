@@ -7,7 +7,7 @@ resource "aws_iam_role" "github_role" {
 ***REMOVED***
             "Effect": "Allow",
             "Principal": {
-                "Federated": "arn:aws:iam::504697764804:oidc-provider/token.actions.githubusercontent.com"
+                "Federated": "arn:aws:iam::132900311735:oidc-provider/token.actions.githubusercontent.com"
             ***REMOVED***,
             "Action": "sts:AssumeRoleWithWebIdentity",
             "Condition": {

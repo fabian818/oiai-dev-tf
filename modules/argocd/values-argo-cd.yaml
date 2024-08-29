@@ -9,12 +9,35 @@ server:
 
 repoServer:
   replicas: 2
+  repoServer:
+
+  initContainers:
+    - name: helm-aws-s3
+      image: alpine/helm:3.12.2
+      volumeMounts:
+        - name: helm-working-dir
+          mountPath: /helm-working-dir
+
+      env:
+        - name: HELM_CACHE_HOME
+          value: /helm-working-dir
+        - name: HELM_CONFIG_HOME
+          value: /helm-working-dir
+        - name: HELM_DATA_HOME
+          value: /helm-working-dir
+      command: [ "/bin/sh", "-c" ]
+      args:
+        - apk --no-cache add curl;
+          helm plugin install https://github.com/hypnoglow/helm-s3.git;
+          rm -rf /helm-working-dir/plugins/https-github.com-hypnoglow-helm-s3.git;
+          helm repo add postgres s3://custom-helm-charts/stable/postgres;
+          chmod -R 777 $HELM_DATA_HOME;
 
 applicationSet:
   replicas: 2
 
 global:
-  domain: argocd.oiai.thisguydeploys.com ${domain***REMOVED***
+  domain: ${domain***REMOVED***
 
 configs:
   params:
@@ -31,6 +54,7 @@ server:
       alb.ingress.kubernetes.io/backend-protocol: HTTP
       alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":80***REMOVED***, {"HTTPS":443***REMOVED***]'
       alb.ingress.kubernetes.io/ssl-redirect: '443'
+      alb.ingress.kubernetes.io/certificate-arn: '${certificate_arn***REMOVED***'
     aws:
       serviceType: ClusterIP
       backendProtocolVersion: GRPC

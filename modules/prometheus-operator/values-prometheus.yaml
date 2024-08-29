@@ -36,3 +36,7 @@ prometheus:
       sessionAffinity: None
       sessionAffinityConfig: {***REMOVED***
       type: LoadBalancer
+global:
+  imagePullSecrets: []
+  imageRegistry: ""
+  storageClass: gp2

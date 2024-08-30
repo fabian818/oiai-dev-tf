@@ -29,7 +29,7 @@ module "api_db" {
 
   engine            = "postgres"
   engine_version    = "13"
-  instance_class    = "db.t4g.micro"  
+  instance_class    = "db.t4g.micro"
   allocated_storage = 5
 
   db_name  = "demodb"
@@ -78,12 +78,12 @@ resource "kubernetes_secret" "db_credentials" {
   ***REMOVED***
 
 ***REMOVED***
-    host     = module.api_db.db_instance_address
-    user     = local.secret_json.username
-    port     = 5432
-    password = local.secret_json.password
-    dbname   = "demodb"
-    DATABASE_URL= "postgresql://${local.secret_json.username***REMOVED***:${local.secret_json.password***REMOVED***@${module.api_db.db_instance_address***REMOVED***:5432/demodb"
+    host         = module.api_db.db_instance_address
+    user         = local.secret_json.username
+    port         = 5432
+    password     = local.secret_json.password
+    dbname       = "demodb"
+    DATABASE_URL = "postgresql://${local.secret_json.username***REMOVED***:${local.secret_json.password***REMOVED***@${module.api_db.db_instance_address***REMOVED***:5432/demodb"
 
   ***REMOVED***
 ***REMOVED***

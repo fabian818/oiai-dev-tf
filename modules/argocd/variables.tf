@@ -10,3 +10,7 @@ variable "version_argo_cd" {
 variable "certificate_arn" {
   description = "Domain certificate"
 ***REMOVED***
+
+variable "role_arn" {
+
+***REMOVED***

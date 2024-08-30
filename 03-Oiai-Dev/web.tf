@@ -1,6 +1,6 @@
 module "web" {
   source = "cloudposse/s3-website/aws"
-  
+
   namespace      = "dg"
   stage          = "dev"
   name           = "oiai-wev"

@@ -58,3 +58,26 @@ server:
     aws:
       serviceType: ClusterIP
       backendProtocolVersion: GRPC
+authScripts:
+  enabled: true
+  scripts: 
+    ecr-login.sh: |
+      ***REMOVED***
+      # Retrieve the authorization token from AWS ECR
+      auth_token=$(aws ecr get-authorization-token --region us-east-1 --output text --query 'authorizationData[].authorizationToken')
+      
+      # Decode the authorization token
+      decoded_token=$(echo $auth_token | base64 -d)
+      
+      # Extract username and password
+      username=$(echo $decoded_token | cut -d: -f1)
+      password=$(echo $decoded_token | cut -d: -f2)
+      
+      # Output username and password
+      echo "$username:$password"
+
+serviceAccount:
+  create: true
+  annotations:
+    eks.amazonaws.com/role-arn: ${role_arn***REMOVED***
+  name: "argocd-image-updater"  

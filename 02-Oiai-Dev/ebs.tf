@@ -1,27 +1,27 @@
 module "ebs_irsa_access" {
-***REMOVED***
-***REMOVED***
+  source       = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  create_role  = true
   role_name    = "ebs-dev-role"
-***REMOVED***
-***REMOVED***
+  provider_url = local.main_cluster.cluster_oidc_issuer_url
+  role_policy_arns = [
     "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  ]
+  oidc_fully_qualified_audiences = ["sts.amazonaws.com"]
+  oidc_subjects_with_wildcards = [
+    "system:serviceaccount:*"
+  ]
+}
 
 resource "kubernetes_service_account" "ebs_sa" {
-***REMOVED***
+  metadata {
     name      = "ebs-csi-controller-sa"
     namespace = "storage"
     annotations = {
       "eks.amazonaws.com/role-arn" = module.ebs_irsa_access.iam_role_arn
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
   automount_service_account_token = true
-***REMOVED***
+}
 
 resource "helm_release" "ebs" {
   name       = "ebs"
@@ -33,5 +33,5 @@ resource "helm_release" "ebs" {
   set {
     name  = "controller.serviceAccount.create"
     value = "false"
-  ***REMOVED***
-***REMOVED***
+  }
+}

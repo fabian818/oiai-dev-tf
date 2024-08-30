@@ -7,8 +7,8 @@ extraDeploy: []
 nameOverride: ""
 fullnameOverride: ""
 clusterDomain: cluster.local
-commonLabels: {***REMOVED***
-commonAnnotations: {***REMOVED***
+commonLabels: {}
+commonAnnotations: {}
 image:
   registry: docker.io
   repository: bitnami/grafana
@@ -18,7 +18,7 @@ image:
   pullSecrets: []
 admin:
   user: "admin"
-  password: "${password***REMOVED***"
+  password: "${password}"
   existingSecret: ""
   existingSecretPasswordKey: password
 plugins: ""
@@ -50,7 +50,7 @@ imageRenderer:
   callbackURL: ""
 config:
   useGrafanaIniFile: true
-  grafanaIniConfigMap: ${config_map***REMOVED***
+  grafanaIniConfigMap: ${config_map}
   grafanaIniSecret: ""
 dashboardsProvider:
   enabled: false
@@ -58,7 +58,7 @@ dashboardsProvider:
 dashboardsConfigMaps: []
 datasources:
   secretName: ""
-  secretDefinition: {***REMOVED***
+  secretDefinition: {}
 notifiers:
   configMapName: ""
 
@@ -72,8 +72,8 @@ grafana:
   schedulerName: ""
   terminationGracePeriodSeconds: ""
   priorityClassName: ""
-  podLabels: {***REMOVED***
-  podAnnotations: {***REMOVED***
+  podLabels: {}
+  podAnnotations: {}
   podAffinityPreset: ""
   podAntiAffinityPreset: soft
   containerPorts:
@@ -83,8 +83,8 @@ grafana:
     type: ""
     key: ""
     values: []
-  affinity: {***REMOVED***
-  nodeSelector: {***REMOVED***
+  affinity: {}
+  nodeSelector: {}
   tolerations: []
   topologySpreadConstraints: []
   podSecurityContext:
@@ -106,8 +106,8 @@ grafana:
     seccompProfile:
       type: "RuntimeDefault"
   resources:
-    limits: {***REMOVED***
-    requests: {***REMOVED***
+    limits: {}
+    requests: {}
   livenessProbe:
     enabled: true
     path: /api/health
@@ -135,10 +135,10 @@ grafana:
     timeoutSeconds: 5
     failureThreshold: 6
     successThreshold: 1
-  customLivenessProbe: {***REMOVED***
-  customReadinessProbe: {***REMOVED***
-  customStartupProbe: {***REMOVED***
-  lifecycleHooks: {***REMOVED***
+  customLivenessProbe: {}
+  customReadinessProbe: {}
+  customStartupProbe: {}
+  lifecycleHooks: {}
   sidecars: []
   initContainers: []
   extraVolumes: []
@@ -152,7 +152,7 @@ grafana:
 persistence:
   enabled: false
   storageClass: ""
-  annotations: {***REMOVED***
+  annotations: {}
   existingClaim: ""
   accessMode: ReadWriteOnce
   accessModes: []
@@ -160,7 +160,7 @@ persistence:
 serviceAccount:
   create: true
   name: ""
-  annotations: {***REMOVED***
+  annotations: {}
   automountServiceAccountToken: false
 service:
   type: LoadBalancer
@@ -172,11 +172,11 @@ service:
   loadBalancerIP: ""
   loadBalancerClass: ""
   loadBalancerSourceRanges: []
-  annotations: {***REMOVED***
+  annotations: {}
   externalTrafficPolicy: Cluster
   extraPorts: []
   sessionAffinity: None
-  sessionAffinityConfig: {***REMOVED***
+  sessionAffinityConfig: {}
 ingress:
   enabled: true
   pathType: Prefix
@@ -185,7 +185,7 @@ ingress:
   path: /
   annotations:
     alb.ingress.kubernetes.io/scheme: internet-facing
-    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80, "HTTPS":443***REMOVED***]'
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80, "HTTPS":443}]'
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/load-balancer-attributes: "idle_timeout.timeout_seconds=120"
     alb.ingress.kubernetes.io/group.name: grafana
@@ -213,16 +213,16 @@ metrics:
     namespace: ""
     interval: ""
     scrapeTimeout: ""
-    selector: {***REMOVED***
+    selector: {}
     relabelings: []
     metricRelabelings: []
     honorLabels: false
-    labels: {***REMOVED***
+    labels: {}
     jobLabel: ""
   prometheusRule:
     enabled: false
     namespace: ""
-    additionalLabels: {***REMOVED***
+    additionalLabels: {}
     rules: []
 volumePermissions:
   enabled: false
@@ -234,8 +234,8 @@ volumePermissions:
     pullPolicy: IfNotPresent
     pullSecrets: []
   resources:
-    limits: {***REMOVED***
-    requests: {***REMOVED***
+    limits: {}
+    requests: {}
   containerSecurityContext:
     seLinuxOptions: null
     runAsUser: 0

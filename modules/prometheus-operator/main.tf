@@ -1,5 +1,5 @@
 resource "aws_iam_policy" "thanos_policy" {
-  name        = "${var.cluster_name***REMOVED***ThanosPolicy"
+  name        = "${var.cluster_name}ThanosPolicy"
   description = "Policy for AWS Load Balancer"
   policy = jsonencode({
     Version = "2012-10-17",
@@ -8,47 +8,47 @@ resource "aws_iam_policy" "thanos_policy" {
         Effect = "Allow",
         Action = [
           "s3:*"
-      ***REMOVED***,
+        ],
         Resource = "*",
-      ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***)
-***REMOVED***
+      }
+    ]
+  })
+}
 
 module "thanos_irsa_access" {
-***REMOVED***
-***REMOVED***
-  role_name    = "${var.cluster_name***REMOVED***-thanos-role"
+  source       = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  create_role  = true
+  role_name    = "${var.cluster_name}-thanos-role"
   provider_url = var.provider_url
-***REMOVED***
+  role_policy_arns = [
     aws_iam_policy.thanos_policy.arn
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  ]
+  oidc_fully_qualified_audiences = ["sts.amazonaws.com"]
+  oidc_subjects_with_wildcards = [
+    "system:serviceaccount:*"
+  ]
+}
 
 
 resource "kubernetes_secret" "thanos_objstore_config" {
-***REMOVED***
+  metadata {
     name      = "thanos-objstore-config"
     namespace = "monitoring"
-  ***REMOVED***
+  }
 
-***REMOVED***
+  data = {
     "thanos.yaml" = <<-EOT
       type: s3
       config:
-        bucket: ${var.bucket_name***REMOVED***
-        region: ${var.region***REMOVED***
-        endpoint: s3.${var.region***REMOVED***.amazonaws.com
+        bucket: ${var.bucket_name}
+        region: ${var.region}
+        endpoint: s3.${var.region}.amazonaws.com
         aws_sdk_auth: true
     EOT
-  ***REMOVED***
+  }
 
   type = "Opaque"
-***REMOVED***
+}
 
 resource "helm_release" "prometheus_operator" {
   name       = "kube-prometheus"
@@ -58,10 +58,10 @@ resource "helm_release" "prometheus_operator" {
   version    = var.version_prometheus_operator
 
   values = [
-    "${templatefile("${path.module***REMOVED***/values-prometheus.yaml",
+    "${templatefile("${path.module}/values-prometheus.yaml",
       {
         thanos_s3_role_arn = module.thanos_irsa_access.iam_role_arn,
         cluster_name       = var.cluster_name
-    ***REMOVED***)***REMOVED***"
-***REMOVED***
-***REMOVED***
+    })}"
+  ]
+}

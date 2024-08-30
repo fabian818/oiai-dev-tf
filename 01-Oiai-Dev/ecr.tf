@@ -8,4 +8,4 @@ module "ecr_repos" {
   resource_prefix  = local.resource_prefix
   additional_tags  = local.product_tags
   component_prefix = each.key
-***REMOVED***
+}

@@ -6,4 +6,4 @@ module "prometheus_operator" {
   version_prometheus_operator = "8.25.8"
   region                      = local.default_region
   bucket_name                 = "monitoring-us-east-1-thanos-bucket-bucket"
-***REMOVED***
+}

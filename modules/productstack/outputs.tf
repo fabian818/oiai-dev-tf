@@ -4,6 +4,6 @@ output "productstack-sg-ids" {
     for k, obj in var.components : k => {
       name = obj.name
       id   = aws_security_group.productstack_components[k].id
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
+    }
+  }
+}

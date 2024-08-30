@@ -8,4 +8,4 @@ module "web" {
   parent_zone_id = "Z00811921MTDWQCX2K9UX"
 
   logs_enabled = false
-***REMOVED***
+}

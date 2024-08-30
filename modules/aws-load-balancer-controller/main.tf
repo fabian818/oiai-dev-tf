@@ -8,14 +8,14 @@ resource "aws_iam_policy" "load_balancer_policy" {
         Effect = "Allow",
         Action = [
           "iam:CreateServiceLinkedRole"
-      ***REMOVED***,
+        ],
         Resource = "*",
         Condition = {
           StringEquals = {
             "iam:AWSServiceName" : "elasticloadbalancing.amazonaws.com"
-          ***REMOVED***
-        ***REMOVED***
-      ***REMOVED***,
+          }
+        }
+      },
       {
         Effect = "Allow",
         Action = [
@@ -34,9 +34,9 @@ resource "aws_iam_policy" "load_balancer_policy" {
           "ec2:GetCoipPoolUsage",
           "ec2:DescribeCoipPools",
           "elasticloadbalancing:*"
-      ***REMOVED***,
+        ],
         Resource = "*"
-      ***REMOVED***,
+      },
       {
         Effect = "Allow",
         Action = [
@@ -57,51 +57,51 @@ resource "aws_iam_policy" "load_balancer_policy" {
           "shield:DescribeProtection",
           "shield:CreateProtection",
           "shield:DeleteProtection"
-      ***REMOVED***,
+        ],
         Resource = "*"
-      ***REMOVED***,
+      },
       {
         Effect = "Allow",
         Action = [
           "ec2:AuthorizeSecurityGroupIngress",
           "ec2:RevokeSecurityGroupIngress"
-      ***REMOVED***,
+        ],
         Resource = "*"
-      ***REMOVED***,
+      },
       {
         Effect = "Allow",
         Action = [
           "ec2:CreateSecurityGroup"
-      ***REMOVED***,
+        ],
         Resource = "*"
-      ***REMOVED***,
+      },
       {
         Effect = "Allow",
         Action = [
           "ec2:AuthorizeSecurityGroupIngress",
           "ec2:RevokeSecurityGroupIngress",
           "ec2:DeleteSecurityGroup"
-      ***REMOVED***,
+        ],
         Resource = "*",
         Condition = {
           Null = {
             "aws:ResourceTag/elbv2.k8s.aws/cluster" : "false"
-          ***REMOVED***
-        ***REMOVED***
-      ***REMOVED***,
+          }
+        }
+      },
       {
         Effect = "Allow",
         Action = [
           "elasticloadbalancing:CreateLoadBalancer",
           "elasticloadbalancing:CreateTargetGroup"
-      ***REMOVED***,
+        ],
         Resource = "*",
         Condition = {
           Null = {
             "aws:RequestTag/elbv2.k8s.aws/cluster" : "false"
-          ***REMOVED***
-        ***REMOVED***
-      ***REMOVED***,
+          }
+        }
+      },
       {
         Effect = "Allow",
         Action = [
@@ -109,9 +109,9 @@ resource "aws_iam_policy" "load_balancer_policy" {
           "elasticloadbalancing:DeleteListener",
           "elasticloadbalancing:CreateRule",
           "elasticloadbalancing:DeleteRule"
-      ***REMOVED***,
+        ],
         Resource = "*"
-      ***REMOVED***,
+      },
       {
         Effect = "Allow",
         Action = [
@@ -123,14 +123,14 @@ resource "aws_iam_policy" "load_balancer_policy" {
           "elasticloadbalancing:ModifyTargetGroup",
           "elasticloadbalancing:ModifyTargetGroupAttributes",
           "elasticloadbalancing:DeleteTargetGroup"
-      ***REMOVED***,
+        ],
         Resource = "*",
         Condition = {
           Null = {
             "aws:ResourceTag/elbv2.k8s.aws/cluster" : "false"
-          ***REMOVED***
-        ***REMOVED***
-      ***REMOVED***,
+          }
+        }
+      },
       {
         Effect = "Allow",
         Action = [
@@ -139,37 +139,37 @@ resource "aws_iam_policy" "load_balancer_policy" {
           "elasticloadbalancing:AddListenerCertificates",
           "elasticloadbalancing:RemoveListenerCertificates",
           "elasticloadbalancing:ModifyRule"
-      ***REMOVED***,
+        ],
         Resource = "*"
-      ***REMOVED***
-  ***REMOVED***
-  ***REMOVED***)
-***REMOVED***
+      }
+    ]
+  })
+}
 
 module "aws_load_balancer_controller_role" {
-***REMOVED***
-***REMOVED***
+  source       = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
+  create_role  = true
   role_name    = "aws-load-balancer-controller-role"
   provider_url = var.provider_url
-***REMOVED***
+  role_policy_arns = [
     aws_iam_policy.load_balancer_policy.arn
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
-***REMOVED***
+  ]
+  oidc_fully_qualified_audiences = ["sts.amazonaws.com"]
+  oidc_subjects_with_wildcards = [
+    "system:serviceaccount:*"
+  ]
+}
 
 resource "kubernetes_service_account" "aws_load_balancer_controller" {
-***REMOVED***
+  metadata {
     name      = "aws-load-balancer-controller"
     namespace = "kube-system"
     annotations = {
       "eks.amazonaws.com/role-arn" = module.aws_load_balancer_controller_role.iam_role_arn
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
   automount_service_account_token = true
-***REMOVED***
+}
 
 resource "helm_release" "aws_load_balancer_controller" {
   name       = "aws-load-balancer-controller"
@@ -180,25 +180,25 @@ resource "helm_release" "aws_load_balancer_controller" {
   set {
     name  = "clusterName"
     value = var.cluster_name
-  ***REMOVED***
+  }
 
   set {
     name  = "serviceAccount.create"
     value = false
-  ***REMOVED***
+  }
 
   set {
     name  = "serviceAccount.name"
     value = "aws-load-balancer-controller"
-  ***REMOVED***
+  }
 
   set {
     name  = "region"
     value = var.region
-  ***REMOVED***
+  }
 
   set {
     name  = "vpcId"
     value = var.vpc_id
-  ***REMOVED***
-***REMOVED***
+  }
+}

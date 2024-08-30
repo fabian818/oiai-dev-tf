@@ -15,11 +15,11 @@ module "vpc" {
 
   private_subnet_tags = {
     "kubernetes.io/role/internal-elb" = 1
-  ***REMOVED***
+  }
 
   public_subnet_tags = {
     "kubernetes.io/role/elb" = 1
-  ***REMOVED***
+  }
 
   default_security_group_ingress = [
     {
@@ -27,8 +27,8 @@ module "vpc" {
       to_port     = 65535
       protocol    = "tcp"
       cidr_blocks = "0.0.0.0/0"
-    ***REMOVED***
-***REMOVED***
+    }
+  ]
 
   default_security_group_egress = [
     {
@@ -36,8 +36,8 @@ module "vpc" {
       to_port     = 65535
       protocol    = "tcp"
       cidr_blocks = "0.0.0.0/0"
-    ***REMOVED***
-***REMOVED***
+    }
+  ]
 
   tags = local.product_tags
-***REMOVED***
+}

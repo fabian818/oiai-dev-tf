@@ -1,11 +1,11 @@
 resource "kubernetes_config_map" "grafana_ini" {
-***REMOVED***
+  metadata {
     name = "grafana-ini-configmap"
     namespace = "monitoring"
-  ***REMOVED***
+  }
 
-***REMOVED***
-    "grafana.ini" = <<-***REMOVED***
+  data = {
+    "grafana.ini" = <<-EOF
       apiVersion: v1
       kind: ConfigMap
       metadata:
@@ -14,18 +14,18 @@ resource "kubernetes_config_map" "grafana_ini" {
         grafana.ini: |
           [server]
           root_url = https://grafana.oiai.thisguydeploys.com
-    ***REMOVED***
-  ***REMOVED***
-***REMOVED***
+    EOF
+  }
+}
 
 
 data "aws_secretsmanager_secret" "grafana_password" {
   name = "dev/oiai/grafana/password"
-***REMOVED***
+}
 
 data "aws_secretsmanager_secret_version" "grafana_password_version" {
   secret_id = data.aws_secretsmanager_secret.grafana_password.id
-***REMOVED***
+}
 
 resource "helm_release" "grafana" {
   name       = "grafana"
@@ -35,10 +35,10 @@ resource "helm_release" "grafana" {
   version    = "9.8.3"
 
   values = [
-    "${templatefile("${path.module***REMOVED***/values.yaml",
+    "${templatefile("${path.module}/values.yaml",
     {
       config_map=kubernetes_config_map.grafana_ini.metadata[0].name,
       password=data.aws_secretsmanager_secret_version.grafana_password_version.secret_string,
-    ***REMOVED***)***REMOVED***"
-***REMOVED***
-***REMOVED***
+    })}"
+  ]
+}

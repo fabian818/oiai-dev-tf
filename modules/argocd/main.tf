@@ -6,11 +6,11 @@ resource "helm_release" "argo_cd" {
   version    = var.version_argo_cd
 
   values = [
-    "${templatefile("${path.module***REMOVED***/values-argo-cd.yaml",
+    "${templatefile("${path.module}/values-argo-cd.yaml",
       {
         domain          = var.domain,
         certificate_arn = var.certificate_arn,
         role_arn        = var.role_arn
-    ***REMOVED***)***REMOVED***"
-***REMOVED***
-***REMOVED***
+    })}"
+  ]
+}

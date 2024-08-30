@@ -1,5 +1,5 @@
 redis-ha:
-  enabled: true
+  enabled: false
 
 controller:
   replicas: 1
@@ -37,7 +37,7 @@ applicationSet:
   replicas: 2
 
 global:
-  domain: ${domain***REMOVED***
+  domain: ${domain}
 
 configs:
   params:
@@ -52,9 +52,9 @@ server:
       alb.ingress.kubernetes.io/scheme: internet-facing
       alb.ingress.kubernetes.io/target-type: ip
       alb.ingress.kubernetes.io/backend-protocol: HTTP
-      alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":80***REMOVED***, {"HTTPS":443***REMOVED***]'
+      alb.ingress.kubernetes.io/listen-ports: '[{"HTTPS":80}, {"HTTPS":443}]'
       alb.ingress.kubernetes.io/ssl-redirect: '443'
-      alb.ingress.kubernetes.io/certificate-arn: '${certificate_arn***REMOVED***'
+      alb.ingress.kubernetes.io/certificate-arn: '${certificate_arn}'
     aws:
       serviceType: ClusterIP
       backendProtocolVersion: GRPC
@@ -62,7 +62,7 @@ authScripts:
   enabled: true
   scripts: 
     ecr-login.sh: |
-      ***REMOVED***
+      #!/bin/sh
       # Retrieve the authorization token from AWS ECR
       auth_token=$(aws ecr get-authorization-token --region us-east-1 --output text --query 'authorizationData[].authorizationToken')
       
@@ -79,5 +79,5 @@ authScripts:
 serviceAccount:
   create: true
   annotations:
-    eks.amazonaws.com/role-arn: ${role_arn***REMOVED***
+    eks.amazonaws.com/role-arn: ${role_arn}
   name: "argocd-image-updater"  

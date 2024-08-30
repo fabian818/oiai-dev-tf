@@ -1,3 +1,3 @@
-***REMOVED***
-  prefix = "${var.resource_prefix***REMOVED***-${var.aws_region***REMOVED***-${var.component_prefix***REMOVED***"
-***REMOVED***
+locals {
+  prefix = "${var.resource_prefix}-${var.aws_region}-${var.component_prefix}"
+}

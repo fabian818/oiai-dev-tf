@@ -1,17 +1,17 @@
 prometheus:
   serviceAccount:
     annotations:
-      eks.amazonaws.com/role-arn: ${thanos_s3_role_arn***REMOVED***
+      eks.amazonaws.com/role-arn: ${thanos_s3_role_arn}
   persistence:
     enabled: true
     accessModes:
       - ReadWriteOnce
     size: 8Gi
     annotations:
-      eks.amazonaws.com/role-arn: ${thanos_s3_role_arn***REMOVED***
+      eks.amazonaws.com/role-arn: ${thanos_s3_role_arn}
   disableCompaction: true
   externalLabels:
-    cluster: ${cluster_name***REMOVED***
+    cluster: ${cluster_name}
   thanos:
     create: true
     objectStorageConfig:
@@ -25,7 +25,7 @@ prometheus:
       clusterIP: None
       externalTrafficPolicy: Cluster
       extraPorts: []
-      labels: {***REMOVED***
+      labels: {}
       loadBalancerClass: ""
       loadBalancerIP: ""
       loadBalancerSourceRanges: []
@@ -34,7 +34,7 @@ prometheus:
       ports:
         grpc: 10901
       sessionAffinity: None
-      sessionAffinityConfig: {***REMOVED***
+      sessionAffinityConfig: {}
       type: LoadBalancer
 global:
   imagePullSecrets: []

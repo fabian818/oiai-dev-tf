@@ -1,4 +1,4 @@
-data "aws_caller_identity" "current" {***REMOVED***
+data "aws_caller_identity" "current" {}
 
 module "main_eks" {
   source  = "terraform-aws-modules/eks/aws"
@@ -16,14 +16,14 @@ module "main_eks" {
   cluster_addons = {
     coredns = {
       most_recent = true
-    ***REMOVED***
+    }
     kube-proxy = {
       most_recent = true
-    ***REMOVED***
+    }
     vpc-cni = {
       most_recent = true
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
@@ -34,25 +34,25 @@ module "main_eks" {
     disk_size = 50
     update_config = {
       max_unavailable_percentage = 33
-    ***REMOVED***
+    }
     iam_role_additional_policies = {
       AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
       AmazonSSMPatchAssociation    = "arn:aws:iam::aws:policy/AmazonSSMPatchAssociation"
-    ***REMOVED***
-  ***REMOVED***
+    }
+  }
 
   eks_managed_node_groups = {
     on-demand-4vcpu-16gb = {
       instance_types = ["t3.medium"]
       capacity_type  = "ON_DEMAND"
-      min_size       = 4
+      min_size       = 2
       max_size       = 5
-      desired_size   = 4
+      desired_size   = 2
       launch_template_tags = {
         "amiFamily" = "bottlerocket"
-      ***REMOVED***
-    ***REMOVED***
-  ***REMOVED***
+      }
+    }
+  }
 
   # aws-auth configmap
   # create_aws_auth_configmap = false
@@ -63,22 +63,22 @@ module "main_eks" {
       rolearn  = "AWSReservedSSO_AdministratorAccess_934ff643f03112d1"
       username = "SSOAdmin"
       groups   = ["system:masters"]
-    ***REMOVED***,
+    },
     {
       rolearn  = "arn:aws:iam::132900311735:role/AWSReservedSSO_AdministratorAccess_934ff643f03112d1"
       username = "SSOAdmin"
       groups   = ["system:masters"]
-    ***REMOVED***,
+    },
     {
       rolearn  = aws_iam_role.github_role.arn
       username = "github-actions"
       groups   = ["system:masters"]
-    ***REMOVED***
-***REMOVED***
+    }
+  ]
 
   aws_auth_accounts = [
     data.aws_caller_identity.current.account_id # dg-sandbox account
-***REMOVED***
+  ]
 
   tags = local.product_tags
-***REMOVED***
+}

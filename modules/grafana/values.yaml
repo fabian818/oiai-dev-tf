@@ -1,0 +1,247 @@
+global:
+  imageRegistry: ""
+  imagePullSecrets: []
+  storageClass: ""
+kubeVersion: ""
+extraDeploy: []
+nameOverride: ""
+fullnameOverride: ""
+clusterDomain: cluster.local
+commonLabels: {***REMOVED***
+commonAnnotations: {***REMOVED***
+image:
+  registry: docker.io
+  repository: bitnami/grafana
+  tag: 10.3.1-debian-11-r4
+  digest: ""
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+admin:
+  user: "admin"
+  password: "${password***REMOVED***"
+  existingSecret: ""
+  existingSecretPasswordKey: password
+plugins: ""
+ldap:
+  enabled: false
+  allowSignUp: false
+  configuration: ""
+  configMapName: ""
+  secretName: ""
+  uri: ""
+  binddn: ""
+  bindpw: ""
+  basedn: ""
+  searchAttribute: "uid"
+  searchFilter: ""
+  extraConfiguration: ""
+  tls:
+    enabled: false
+    startTls: false
+    skipVerify: false
+    certificatesMountPath: /opt/bitnami/grafana/conf/ldap/
+    certificatesSecret: ""
+    CAFilename: ""
+    certFilename: ""
+    certKeyFilename: ""
+imageRenderer:
+  enabled: false
+  serverURL: ""
+  callbackURL: ""
+config:
+  useGrafanaIniFile: true
+  grafanaIniConfigMap: ${config_map***REMOVED***
+  grafanaIniSecret: ""
+dashboardsProvider:
+  enabled: false
+  configMapName: ""
+dashboardsConfigMaps: []
+datasources:
+  secretName: ""
+  secretDefinition: {***REMOVED***
+notifiers:
+  configMapName: ""
+
+alerting:
+  configMapName: ""
+grafana:
+  updateStrategy:
+    type: RollingUpdate
+  automountServiceAccountToken: false
+  hostAliases: []
+  schedulerName: ""
+  terminationGracePeriodSeconds: ""
+  priorityClassName: ""
+  podLabels: {***REMOVED***
+  podAnnotations: {***REMOVED***
+  podAffinityPreset: ""
+  podAntiAffinityPreset: soft
+  containerPorts:
+    grafana: 3000
+  extraPorts: []
+  nodeAffinityPreset:
+    type: ""
+    key: ""
+    values: []
+  affinity: {***REMOVED***
+  nodeSelector: {***REMOVED***
+  tolerations: []
+  topologySpreadConstraints: []
+  podSecurityContext:
+    enabled: true
+    fsGroupChangePolicy: Always
+    sysctls: []
+    supplementalGroups: []
+    fsGroup: 1001
+  containerSecurityContext:
+    enabled: true
+    seLinuxOptions: null
+    runAsUser: 1001
+    runAsNonRoot: true
+    privileged: false
+    readOnlyRootFilesystem: false
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop: ["ALL"]
+    seccompProfile:
+      type: "RuntimeDefault"
+  resources:
+    limits: {***REMOVED***
+    requests: {***REMOVED***
+  livenessProbe:
+    enabled: true
+    path: /api/health
+    scheme: HTTP
+    initialDelaySeconds: 120
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+  readinessProbe:
+    enabled: true
+    path: /api/health
+    scheme: HTTP
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+  startupProbe:
+    enabled: false
+    path: /api/health
+    scheme: HTTP
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    timeoutSeconds: 5
+    failureThreshold: 6
+    successThreshold: 1
+  customLivenessProbe: {***REMOVED***
+  customReadinessProbe: {***REMOVED***
+  customStartupProbe: {***REMOVED***
+  lifecycleHooks: {***REMOVED***
+  sidecars: []
+  initContainers: []
+  extraVolumes: []
+  extraVolumeMounts: []
+  extraEnvVarsCM: ""
+  extraEnvVarsSecret: ""
+  extraEnvVars: []
+  extraConfigmaps: []
+  command: []
+  args: []
+persistence:
+  enabled: false
+  storageClass: ""
+  annotations: {***REMOVED***
+  existingClaim: ""
+  accessMode: ReadWriteOnce
+  accessModes: []
+  size: 10Gi
+serviceAccount:
+  create: true
+  name: ""
+  annotations: {***REMOVED***
+  automountServiceAccountToken: false
+service:
+  type: LoadBalancer
+  clusterIP: ""
+  ports:
+    grafana: 3000
+  nodePorts:
+    grafana: ""
+  loadBalancerIP: ""
+  loadBalancerClass: ""
+  loadBalancerSourceRanges: []
+  annotations: {***REMOVED***
+  externalTrafficPolicy: Cluster
+  extraPorts: []
+  sessionAffinity: None
+  sessionAffinityConfig: {***REMOVED***
+ingress:
+  enabled: true
+  pathType: Prefix
+  apiVersion: ""
+  hostname: grafana.oiai.thisguydeploys.com
+  path: /
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP":80, "HTTPS":443***REMOVED***]'
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/load-balancer-attributes: "idle_timeout.timeout_seconds=120"
+    alb.ingress.kubernetes.io/group.name: grafana
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:132900311735:certificate/7597e940-797c-4e8d-9591-b412f9e4182d
+    alb.ingress.kubernetes.io/ssl-policy: ELBSecurityPolicy-TLS-1-2-2017-01
+    alb.ingress.kubernetes.io/success-codes: 200,301
+    kubernetes.io/ingress.class: alb
+  tls: true
+  extraHosts: []
+  extraPaths: []
+  extraTls: []
+  secrets: []
+  selfSigned: false
+  ingressClassName: "alb"
+  extraRules: []
+metrics:
+  enabled: false
+  service:
+    annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "3000"
+      prometheus.io/path: "/metrics"
+  serviceMonitor:
+    enabled: false
+    namespace: ""
+    interval: ""
+    scrapeTimeout: ""
+    selector: {***REMOVED***
+    relabelings: []
+    metricRelabelings: []
+    honorLabels: false
+    labels: {***REMOVED***
+    jobLabel: ""
+  prometheusRule:
+    enabled: false
+    namespace: ""
+    additionalLabels: {***REMOVED***
+    rules: []
+volumePermissions:
+  enabled: false
+  image:
+    registry: docker.io
+    repository: bitnami/os-shell
+    tag: 11-debian-11-r96
+    digest: ""
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  resources:
+    limits: {***REMOVED***
+    requests: {***REMOVED***
+  containerSecurityContext:
+    seLinuxOptions: null
+    runAsUser: 0
+diagnosticMode:
+  enabled: false
+  command:
+    - sleep
+  args:
+    - infinity

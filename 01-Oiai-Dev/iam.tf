@@ -13,7 +13,8 @@ resource "aws_iam_role" "github_role" {
             "Condition": {
                 "ForAnyValue:StringLike": {
                     "token.actions.githubusercontent.com:sub": [
-                        "repo:fabian818/repo:*"
+                        "repo:fabian818/oiai-backend:*",
+                        "repo:fabian818/oiai-frontend:*"
                   ***REMOVED***
                 ***REMOVED***,
                 "ForAllValues:StringEquals": {

@@ -1,3 +1,27 @@
+resource "aws_security_group" "db_sg" {
+  name        = "oiai-db-security-group"
+  description = "Allow traffic to RDS from 10.0.0.0/16"
+  vpc_id      = local.vpc.vpc_id
+
+  ingress {
+    from_port   = 5432
+    to_port     = 5432
+    protocol    = "tcp"
+    cidr_blocks = ["10.2.0.0/16"]
+  ***REMOVED***
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  ***REMOVED***
+
+***REMOVED***
+    Name = "oiai-db-security-group"
+  ***REMOVED***
+***REMOVED***
+
 module "api_db" {
   source = "terraform-aws-modules/rds/aws"
 
@@ -9,17 +33,19 @@ module "api_db" {
   allocated_storage = 5
 
   db_name  = "demodb"
-  username = "user"
+  username = "oiai"
   port     = "5432"
 
   iam_database_authentication_enabled = false
 
-  vpc_security_group_ids = ["sg-12345678"]
+  vpc_security_group_ids = [aws_security_group.db_sg.id]
 
   maintenance_window = "Mon:00:00-Mon:03:00"
   backup_window      = "03:00-06:00"
 
   manage_master_user_password = true
+
+  family = "postgres13"
 
 ***REMOVED***
     Owner       = "user"
@@ -27,22 +53,22 @@ module "api_db" {
   ***REMOVED***
 
   create_db_subnet_group = true
-  subnet_ids             = ["subnet-12345678", "subnet-87654321"]
+  subnet_ids             = local.vpc.private_subnets
 
   # Database Deletion Protection
   deletion_protection = false
 ***REMOVED***
 
-data "aws_secretsmanager_secret_version" "db_credentials" {
-  secret_id = module.db.master_user_secret
-***REMOVED***
-
 data "aws_secretsmanager_secret" "db_secret" {
-  arn = data.aws_secretsmanager_secret_version.db_credentials.arn
+  arn = module.api_db.db_instance_master_user_secret_arn
+***REMOVED***
+
+data "aws_secretsmanager_secret_version" "db_credentials" {
+  secret_id = data.aws_secretsmanager_secret.db_secret.id
 ***REMOVED***
 
 ***REMOVED***
-  secret_json = jsondecode(data.aws_secretsmanager_secret.db_secret.secret_string)
+  secret_json = jsondecode(data.aws_secretsmanager_secret_version.db_credentials.secret_string)
 ***REMOVED***
 
 resource "kubernetes_secret" "db_credentials" {
@@ -52,12 +78,12 @@ resource "kubernetes_secret" "db_credentials" {
   ***REMOVED***
 
 ***REMOVED***
-    host     = module.db.this_db_instance_address
+    host     = module.api_db.db_instance_address
     user     = local.secret_json.username
-    port     = local.secret_json.port
+    port     = 5432
     password = local.secret_json.password
-    dbname   = local.secret_json.dbname
-    DATABASE_URL= "postgresql://${local.secret_json.username***REMOVED***:${local.secret_json.password***REMOVED***@${module.db.this_db_instance_address***REMOVED***:${local.secret_json.port***REMOVED***/${local.secret_json.dbname***REMOVED***"
+    dbname   = "demodb"
+    DATABASE_URL= "postgresql://${local.secret_json.username***REMOVED***:${local.secret_json.password***REMOVED***@${module.api_db.db_instance_address***REMOVED***:5432/demodb"
 
   ***REMOVED***
 ***REMOVED***

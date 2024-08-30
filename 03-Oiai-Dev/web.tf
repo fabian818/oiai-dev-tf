@@ -1,11 +1,11 @@
-module "cdn" {
-  source = "cloudposse/cloudfront-s3-cdn/aws"
+module "web" {
+  source = "cloudposse/s3-website/aws"
+  
+  namespace      = "dg"
+  stage          = "dev"
+  name           = "oiai-wev"
+  hostname       = "web.oiai.thisguydeploys.com"
+  parent_zone_id = "Z00811921MTDWQCX2K9UX"
 
-  namespace         = "dg"
-  stage             = "dev"
-  name              = "oiai-web"
-  aliases           = ["web.oiai.thisguydeploys.com"]
-  dns_alias_enabled = true
-  parent_zone_name  = "oiai.thisguydeploys.com"
-
+  logs_enabled = false
 ***REMOVED***

@@ -2,6 +2,12 @@
 
 This Terraform project manages the infrastructure and deployments for the `oiai` environment. It is organized into three main directories that handle different aspects of the infrastructure, with custom modules provided for reusable components.
 
+
+You can try argocd here -> https://argocd.oiai.thisguydeploys.com
+You can try grafana here -> https://grafana.oiai.thisguydeploys.com
+
+Credentials will be shared throug email.
+
 ## Project Structure
 
 ``` bash

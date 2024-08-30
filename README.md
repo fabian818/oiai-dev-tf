@@ -4,7 +4,7 @@ This Terraform project manages the infrastructure and deployments for the `oiai`
 
 ## Project Structure
 
-<<<
+``` bash
 .
 ├── 01-Oiai-Dev         # Cloud infrastructure (VPC, EKS, etc.)
 │   ├── backend.tf      # tf backend configuration to save the state, in this s3
@@ -64,7 +64,7 @@ This Terraform project manages the infrastructure and deployments for the `oiai`
         ├── main.tf
         ├── values-prometheus.yaml
         └── variables.tf
->>>
+```
 
 ## Directory Breakdown
 
@@ -75,6 +75,21 @@ This Terraform project manages the infrastructure and deployments for the `oiai`
 ## Modules
 
 The `modules` directory contains custom modules created for this project, designed to be reusable across the different directories. Most of the Terraform modules used, however, come from the Terraform Registry, such as the VPC module.
+
+
+## How ArgoCD Image Updater Works
+
+The **ArgoCD Image Updater** automates the process of deploying new images to the Kubernetes cluster by tracking changes in the image registry and triggering updates when a new image version is available.
+
+1. **oiai-backend** repository pushes a new commit to the `main` branch.
+2. This triggers a GitHub Action that builds a new Docker image and pushes it to the ECR repository.
+3. **ArgoCD Image Updater** detects the new image in ECR and automatically creates a commit in the `oiai-api-dev-chart` repository.
+4. ArgoCD, configured with GitOps, notices the new commit and deploys the updated image to the Kubernetes cluster.
+
+![Image Placeholder](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*GSfyL9C5Pksz6iViFnNsIg.png)
+
+This flow ensures continuous delivery and integration, keeping the application up-to-date with the latest changes.
+
 
 ## Potential Improvements
 

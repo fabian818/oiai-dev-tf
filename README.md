@@ -96,6 +96,16 @@ The **ArgoCD Image Updater** automates the process of deploying new images to th
 
 This flow ensures continuous delivery and integration, keeping the application up-to-date with the latest changes.
 
+## Decisions
+
+ I decided to use official modules from the marketplace because they save a lot of time when implementing infrastructure.
+- I chose to use 3 availability zones, placing 2 subnets in each: one public and one private.
+- I used nodegroups and autoscaling groups to provision nodes to the EKS cluster because, for a small project, nodegroups were sufficient.
+- I opted for this folder structure in Terraform because it speeds up execution time and separates functional from non-functional infrastructure, reducing the risk of outages.
+- I selected Grafana as the observability tool because it integrates well with the most commonly used Kubernetes data sources like Prometheus and Loki.
+- I chose ArgoCD as the CD tool because it allows for a fast implementation of continuous delivery solutions and provides visibility tools for synchronization processes.
+- I used the metrics-server and HPA to handle pod autoscaling for the API, as it is a simple and effective solution for this use case.
+- I decided to follow the principle of least privilege to maintain security in the application; nodes and databases are isolated in private networks and protected by firewalls. However, in the future, I would increase security by using SecurityGroup CRDs to use it as the only entry point to the firewall, instead of relying on CIDRs, which could be risky.
 
 ## Potential Improvements
 
@@ -107,6 +117,8 @@ With more time, several enhancements could be made to this Terraform project:
 - **Advanced Monitoring Dashboards**: Creating more dashboards to cover various aspects of application and infrastructure monitoring.
 - **High Availability with Aurora**: Migrating to Aurora instead of using a standard RDS instance to ensure higher availability, though this was avoided to keep costs low in my personal account.
 - **S3/CloudFront Stack for Deployment**: Utilizing an S3/CloudFront stack for optimal content delivery; however, due to a service quota limitation, creating a CloudFront distribution was not possible at this time.
+- **Security Tools**:In the future, I would like to implement code quality monitoring tools, such as SonarQube, and security tools like Splunk and Kyverno for Kubernetes policy management.
+-  **Terraform Testing**I also would have liked to implement Terraform tests; however, I did not have sufficient time. I would focus on testing critical components to avoid potential outages caused by a `terraform apply`.
 
 ## Future Work
 
